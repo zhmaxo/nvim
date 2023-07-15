@@ -1,5 +1,4 @@
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.cmd 'source ~/.vimrc'
 
 -- require('plugins/lazy_bootstrap') -- lua/plugins/lazy_bootstrap
 require('config/lazy') -- lua/config/lazy

@@ -1,7 +1,7 @@
 -- RUSSIAN KEYMAP --
-vim.cmd [[set keymap=russian-jcukenwin]]
-vim.o.iminsert = 0
-vim.o.imsearch = 0
+-- vim.cmd [[set keymap=russian-jcukenwin]]
+-- vim.o.iminsert = 0
+-- vim.o.imsearch = 0
 -- highlight lCursor guifg=NONE guibg=Cyan
 
 -- REMAPS --
@@ -10,18 +10,36 @@ local function map(mode, lhs, rhs, opts)
 	vim.keymap.set(mode, lhs, rhs, opts)
 end
 
--- map('n', '<leader>y', '"+y')
--- map('n', '<leader>p', '"+p')
+local function map_n(lhs, rhs, opts)
+  map('n', lhs, rhs, opts)
+end
 
--- map('n', '<leader>p', '', { name = 'path' })
-map('n', '<leader>pf', vim.cmd[[cd %:p:h]], { desc = 'set current file' })
-map('n', '<leader>uh', vim.cmd.checkhealth, { desc = 'checkhealth' })
+-- disable hls
+map_n('<ecs>', '<cmd>noh<cr>', { desc = 'disable hls' })
 
-map('n', '<leader>qb', vim.cmd.bd, { desc = 'close buffer' })
-map('n', ']b', '<cmd>bn<cr>', { desc = 'buffer next' })
-map('n', '[b', vim.cmd.bp, { desc = 'buffer prev' })
+-- map_n('<leader>y', '"+y')
+-- map_n('<leader>p', '"+p')
 
--- map('n', '<leader>qp', vim.cmd[[cd %:p:h]])
+-- map_n('<leader>p', '', { name = 'path' })
+map_n('<leader>pf', vim.cmd[[cd %:p:h]], { desc = 'set current file' })
+
+map_n('<leader>uh', vim.cmd.checkhealth, { desc = 'checkhealth' })
+
+map_n('<leader>ut', '<cmd>vsplit term://nu<cr>', { desc = 'open vsplit terminal' })
+map_n('<leader>uT', '<cmd>term://nu<cr>', { desc = 'open terminal' })
+
+-- session things
+map_n('<leader>qQ', 'ZQ', { desc = 'quit no save' })
+
+-- buffer things
+map_n('<leader>qb', vim.cmd.bd, { desc = 'close buffer' })
+map_n('<leader>qB', '<cmd>bd!<cr>', { desc = 'force close buffer' })
+
+-- moved that to external .vimrc
+-- map_n(']b', '<cmd>bn<cr>', { desc = 'buffer next' })
+-- map_n('[b', vim.cmd.bp, { desc = 'buffer prev' })
+
+-- map_n('<leader>qp', vim.cmd[[cd %:p:h]])
 
 --[=[
 -- stylua: ignore start
