@@ -1,13 +1,10 @@
 return {
 	-- wiki!
   --[[
+  ]]--
   {
     'vimwiki/vimwiki',
-    keys = {
-      --
-    }
   },
-  ]]--
 
   { 'renerocksai/calendar-vim'},
 
@@ -17,13 +14,23 @@ return {
     config = function()
       -- despite the official wiki, only this way seems work to me
       local home = string.gsub(vim.fn.expand('~/zhmaxokasten'), '\\', '\\\\')
+      local main = home .. '/main'
+      local work = home .. '/work'
 
       require'telekasten'.setup{
-        home = home,
-        dailies = home .. '/daily',
-        weeklies = home .. '/weekly',
+        home = main,
+        dailies = main .. '/daily',
+        weeklies = main .. '/weekly',
         templates = home .. '/templates',
         image_subdir = 'img',
+
+        vaults = {
+          work = {
+            home = work,
+            dailies = work .. '/agenda',
+            weeklies = work .. '/agenda',
+          }
+        }
       }
 
       -- Launch panel if nothing is typed after <leader>z
