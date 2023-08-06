@@ -64,6 +64,9 @@ return {
           node_decremental = "<bs>",
         },
       },
+      ignore_install = {
+        'help'
+      }
     },
     ---@param opts TSConfig
     config = function(_, opts)
