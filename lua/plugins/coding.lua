@@ -4,7 +4,7 @@ return {
   {
     "L3MON4D3/LuaSnip",
     build = (not jit.os:find("Windows"))
-        and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
+      and "echo -e 'NOTE: jsregexp is optional, so not a big deal if it fails to build\n'; make install_jsregexp"
       or nil,
     dependencies = {
       "rafamadriz/friendly-snippets",
@@ -73,17 +73,15 @@ return {
           { name = "buffer" },
           { name = "path" },
         }),
-	--[[
         formatting = {
           format = function(_, item)
-            local icons = require("lazyvim.config").icons.kinds
+            local icons = require("config").icons.kinds
             if icons[item.kind] then
               item.kind = icons[item.kind] .. item.kind
             end
             return item
           end,
         },
-	]]--
         experimental = {
           ghost_text = {
             hl_group = "LspCodeLens",
@@ -120,7 +118,7 @@ return {
       }
       mappings = vim.tbl_filter(function(m)
         return m[1] and #m[1] > 0
-      end, mappings)
+        end, mappings)
       return vim.list_extend(mappings, keys)
     end,
     opts = {
@@ -228,5 +226,25 @@ return {
       end
     end,
   },
-    ]]--
+    ]]
+  --
+
+  -- LANGS
+  --[[
+  ]]
+  --
+  {
+    "ray-x/go.nvim",
+    dependencies = { -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      -- "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("go").setup()
+    end,
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" },
+    build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
+  },
 }

@@ -156,7 +156,7 @@ return {
       local function setup(server)
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
-        }, servers[server] or {})
+          }, servers[server] or {})
 
         if opts.setup[server] then
           if opts.setup[server](server, server_opts) then
@@ -177,7 +177,10 @@ return {
         all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
       end
 
-      local ensure_installed = {} ---@type string[]
+      local ensure_installed = {
+        "rust_analyzer",
+        "gopls",
+      } ---@type string[]
       for server, server_opts in pairs(servers) do
         if server_opts then
           server_opts = server_opts == true and {} or server_opts

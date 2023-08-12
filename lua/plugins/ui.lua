@@ -24,7 +24,7 @@ return {
 				diagnostics = "nvim_lsp",
 				always_show_bufferline = false,
 				diagnostics_indicator = function(_, _, diag)
-					local icons = require("core.config").icons.diagnostics
+					local icons = require("config").icons.diagnostics
 					local ret = (diag.error and icons.Error .. diag.error .. " " or "")
 						.. (diag.warning and icons.Warn .. diag.warning or "")
 					return vim.trim(ret)
@@ -78,11 +78,13 @@ return {
 		config = function()
 			vim.o.timeout = true
 			vim.o.timeoutlen = 500
-			wk = require("which-key")
+			local wk = require("which-key")
 			wk.register({
 				--
 				["<leader>b"] = { name = "+buffer" },
 				["<leader>f"] = { name = "+files/find" },
+				["<leader>j"] = { name = "+jump" },
+				["<leader>l"] = { name = "+lsp" },
 				["<leader>q"] = { name = "+quit/session" },
 				["<leader>u"] = { name = "+utils" },
 				["<leader>w"] = { name = "+wiki" },
@@ -92,6 +94,28 @@ return {
 			wk.setup({
 				--
 			})
+
+			vim.cmd([[
+      autocmd FileType go lua whichkeygo()
+      ]])
+
+			_G.whichkeygo = function()
+				local wk_ = require("which-key")
+				local buf = vim.api.nvim_get_current_buf()
+				wk_.register({
+					[""] = {
+						["<F2>"] = { "<cmd>GoRename<cr>", "go rename", buffer = buf },
+					},
+				})
+				wk_.register({
+					["l"] = {
+						name = "+LSP",
+						["="] = { "<cmd>GoFmt<cr>", "go fmt", buffer = buf },
+						["a"] = { "<cmd>GoCodeActions<cr>", "code actions", buffer = buf },
+						["r"] = { "<cmd>GoRename<cr>", "go rename", buffer = buf },
+					},
+				}, { prefix = "<leader>" })
+			end
 		end,
 	},
 
@@ -142,6 +166,9 @@ return {
     end,
     ]]
 		--
+		keys = {
+			{ "<leader>bs", "<cmd>lua MiniStarter.open(1)<cr>", desc = "open starter buffer" },
+		},
 		config = function() --function(_, config)
 			-- close Lazy and re-open when starter is ready
 			if vim.o.filetype == "lazy" then
@@ -159,8 +186,8 @@ return {
 				evaluate_single = true,
 				items = {
 					starter.sections.builtin_actions(),
-					starter.sections.recent_files(10, false),
-					starter.sections.recent_files(10, true),
+					starter.sections.recent_files(9, false),
+					starter.sections.recent_files(9, true),
 				},
 				content_hooks = {
 					starter.gen_hook.adding_bullet(), --(pad .. '░ ', false),
